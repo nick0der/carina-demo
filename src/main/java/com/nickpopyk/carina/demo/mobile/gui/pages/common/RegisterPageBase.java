@@ -24,9 +24,9 @@ public abstract class RegisterPageBase extends AbstractPage {
 
     public abstract boolean isRadioButtonByTextActive(String text);
 
-    public abstract boolean checkAgreeCheckbox();
+    public abstract void checkAgreeCheckbox(boolean status);
 
-    public abstract boolean uncheckAgreeCheckbox();
+    public abstract boolean isAgreeCheckboxChecked();
 
     public abstract boolean isItemByTextPresent(String text);
 

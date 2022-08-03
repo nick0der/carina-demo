@@ -50,8 +50,10 @@ public class MobileTest implements IAbstractTest {
         registerPage.clickRadioButtonByText(FEMALE_RADIO_BTN_TEXT);
         softAssert.assertFalse(registerPage.isRadioButtonByTextActive("Male"), "[Register page] Male radio button should be turned off");
         softAssert.assertTrue(registerPage.isRadioButtonByTextActive("Female"), "[Register page] Female radio button should be turned on");
-        softAssert.assertTrue(registerPage.checkAgreeCheckbox(), "[Register page] Agree checkbox is not checked");
-        softAssert.assertFalse(registerPage.uncheckAgreeCheckbox(), "[Register page] Agree checkbox should not be checked");
+        registerPage.checkAgreeCheckbox(true);
+        softAssert.assertTrue(registerPage.isAgreeCheckboxChecked(), "[Register page] Agree checkbox is not checked");
+        registerPage.checkAgreeCheckbox(false);
+        softAssert.assertFalse(registerPage.isAgreeCheckboxChecked(), "[Register page] Agree checkbox should not be checked");
 
         softAssert.assertAll();
     }

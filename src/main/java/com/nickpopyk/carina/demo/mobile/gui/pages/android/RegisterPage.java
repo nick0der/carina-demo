@@ -7,9 +7,15 @@ import com.qaprosoft.carina.core.foundation.webdriver.decorator.ExtendedWebEleme
 import com.nickpopyk.carina.demo.utils.IConstants;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.lang.invoke.MethodHandles;
 
 @DeviceType(pageType = DeviceType.Type.ANDROID_PHONE, parentClass = RegisterPageBase.class)
 public class RegisterPage extends RegisterPageBase {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
     @FindBy(id = "backButton")
     ExtendedWebElement backButton;
@@ -83,14 +89,16 @@ public class RegisterPage extends RegisterPageBase {
     }
 
     @Override
-    public boolean checkAgreeCheckbox() {
-        agreeCheckbox.check();
-        return agreeCheckbox.isChecked();
+    public void checkAgreeCheckbox(boolean status) {
+        if (status)
+            agreeCheckbox.check();
+        else
+            agreeCheckbox.uncheck();
+        LOGGER.info("The Agree Checkbox check status is: {} ", agreeCheckbox.isChecked());
     }
 
     @Override
-    public boolean uncheckAgreeCheckbox() {
-        agreeCheckbox.uncheck();
+    public boolean isAgreeCheckboxChecked(){
         return agreeCheckbox.isChecked();
     }
 
