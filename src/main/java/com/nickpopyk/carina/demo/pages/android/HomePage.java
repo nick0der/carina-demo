@@ -1,9 +1,10 @@
-package com.qaprosoft.carina.demo.mymobile.gui.pages.android;
+package com.nickpopyk.carina.demo.pages.android;
 
 import com.qaprosoft.carina.core.foundation.utils.factory.DeviceType;
 import com.qaprosoft.carina.core.foundation.webdriver.decorator.ExtendedWebElement;
-import com.qaprosoft.carina.demo.mymobile.gui.pages.common.HomePageBase;
-import com.qaprosoft.carina.demo.mymobile.gui.pages.common.RegisterPageBase;
+import com.nickpopyk.carina.demo.pages.common.HomePageBase;
+import com.nickpopyk.carina.demo.pages.common.RegisterPageBase;
+import com.nickpopyk.carina.demo.utils.Constants;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
 
@@ -22,12 +23,17 @@ public class HomePage extends HomePageBase {
 
     @Override
     public boolean isNextBtnPresent() {
-        return nextBtn.isElementPresent();
+        return nextBtn.isElementPresent(Constants.TIMEOUT);
     }
 
     @Override
     public boolean isCarinaLogoPresent() {
-        return carinaLogo.isElementPresent();
+        return carinaLogo.isElementPresent(Constants.TIMEOUT);
+    }
+
+    @Override
+    public boolean isPageOpened(){
+        return carinaLogo.isElementPresent(Constants.TIMEOUT);
     }
 
     @Override

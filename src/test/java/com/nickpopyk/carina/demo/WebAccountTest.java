@@ -1,4 +1,4 @@
-package com.qaprosoft.carina.demo.mytest;
+package com.nickpopyk.carina.demo;
 
 import java.lang.invoke.MethodHandles;
 
