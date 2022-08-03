@@ -1,4 +1,4 @@
-package com.nickpopyk.carina.demo.pages.common;
+package com.nickpopyk.carina.demo.mobile.gui.pages.common;
 
 import com.qaprosoft.carina.core.gui.AbstractPage;
 import org.openqa.selenium.WebDriver;
@@ -9,9 +9,9 @@ public abstract class HomePageBase extends AbstractPage {
         super(driver);
     }
 
-    public abstract boolean isNextBtnPresent();
+    public abstract boolean isNextButtonPresent();
 
     public abstract boolean isCarinaLogoPresent();
 
-    public abstract RegisterPageBase clickNextBtn();
+    public abstract RegisterPageBase clickNextButton();
 }

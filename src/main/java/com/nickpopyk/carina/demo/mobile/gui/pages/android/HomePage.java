@@ -1,10 +1,10 @@
-package com.nickpopyk.carina.demo.pages.android;
+package com.nickpopyk.carina.demo.mobile.gui.pages.android;
 
 import com.qaprosoft.carina.core.foundation.utils.factory.DeviceType;
 import com.qaprosoft.carina.core.foundation.webdriver.decorator.ExtendedWebElement;
-import com.nickpopyk.carina.demo.pages.common.HomePageBase;
-import com.nickpopyk.carina.demo.pages.common.RegisterPageBase;
-import com.nickpopyk.carina.demo.utils.Constants;
+import com.nickpopyk.carina.demo.mobile.gui.pages.common.HomePageBase;
+import com.nickpopyk.carina.demo.mobile.gui.pages.common.RegisterPageBase;
+import com.nickpopyk.carina.demo.utils.IConstants;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
 
@@ -15,30 +15,30 @@ public class HomePage extends HomePageBase {
     private ExtendedWebElement carinaLogo;
 
     @FindBy(id = "next_button")
-    ExtendedWebElement nextBtn;
+    ExtendedWebElement nextButton;
 
     public HomePage(WebDriver driver) {
         super(driver);
     }
 
     @Override
-    public boolean isNextBtnPresent() {
-        return nextBtn.isElementPresent(Constants.TIMEOUT);
+    public boolean isNextButtonPresent() {
+        return nextButton.isElementPresent(IConstants.THREE_SECONDS_TIMEOUT);
     }
 
     @Override
     public boolean isCarinaLogoPresent() {
-        return carinaLogo.isElementPresent(Constants.TIMEOUT);
+        return carinaLogo.isElementPresent(IConstants.THREE_SECONDS_TIMEOUT);
     }
 
     @Override
     public boolean isPageOpened(){
-        return carinaLogo.isElementPresent(Constants.TIMEOUT);
+        return carinaLogo.isElementPresent(IConstants.THREE_SECONDS_TIMEOUT) && nextButton.isElementPresent();
     }
 
     @Override
-    public RegisterPageBase clickNextBtn() {
-        nextBtn.click();
+    public RegisterPageBase clickNextButton() {
+        nextButton.click();
         return initPage(getDriver(), RegisterPageBase.class);
     }
 }
