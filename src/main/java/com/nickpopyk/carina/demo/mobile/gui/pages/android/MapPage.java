@@ -1,33 +1,33 @@
 package com.nickpopyk.carina.demo.mobile.gui.pages.android;
 
+import com.nickpopyk.carina.demo.mobile.gui.pages.common.MapPageBase;
 import com.nickpopyk.carina.demo.mobile.gui.pages.common.MenuPageBase;
-import com.nickpopyk.carina.demo.mobile.gui.pages.common.WebViewPageBase;
 import com.nickpopyk.carina.demo.utils.IConstants;
 import com.qaprosoft.carina.core.foundation.utils.factory.DeviceType;
 import com.qaprosoft.carina.core.foundation.webdriver.decorator.ExtendedWebElement;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
 
-@DeviceType(pageType = DeviceType.Type.ANDROID_PHONE, parentClass = WebViewPageBase.class)
-public class WebViewPage extends WebViewPageBase {
+@DeviceType(pageType = DeviceType.Type.ANDROID_PHONE, parentClass = MapPageBase.class)
+public class MapPage extends MapPageBase {
 
     @FindBy(xpath = "//*[@content-desc='Navigate up']")
     private ExtendedWebElement menuButton;
 
-    @FindBy(xpath = "//*[@text='Web View']")
-    private ExtendedWebElement webViewTitle;
+    @FindBy(xpath = "//*[@text='Map']")
+    private ExtendedWebElement mapTitle;
 
-    @FindBy(id = "lin")
-    private ExtendedWebElement linearLayout;
+    @FindBy(xpath = "//*[@content-desc='Google Map']")
+    private ExtendedWebElement googleMap;
 
-    public WebViewPage(WebDriver driver) {
+    public MapPage(WebDriver driver) {
         super(driver);
     }
 
     @Override
     public boolean isPageOpened(){
-        return webViewTitle.isElementPresent(IConstants.THREE_SECONDS_TIMEOUT) &&
-                linearLayout.isElementPresent(IConstants.THREE_SECONDS_TIMEOUT);
+        return mapTitle.isElementPresent(IConstants.THREE_SECONDS_TIMEOUT) &&
+                googleMap.isElementPresent(IConstants.THREE_SECONDS_TIMEOUT);
     }
 
     @Override

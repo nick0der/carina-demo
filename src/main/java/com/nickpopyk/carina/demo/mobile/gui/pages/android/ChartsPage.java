@@ -1,33 +1,33 @@
 package com.nickpopyk.carina.demo.mobile.gui.pages.android;
 
+import com.nickpopyk.carina.demo.mobile.gui.pages.common.ChartsPageBase;
 import com.nickpopyk.carina.demo.mobile.gui.pages.common.MenuPageBase;
-import com.nickpopyk.carina.demo.mobile.gui.pages.common.WebViewPageBase;
 import com.nickpopyk.carina.demo.utils.IConstants;
 import com.qaprosoft.carina.core.foundation.utils.factory.DeviceType;
 import com.qaprosoft.carina.core.foundation.webdriver.decorator.ExtendedWebElement;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
 
-@DeviceType(pageType = DeviceType.Type.ANDROID_PHONE, parentClass = WebViewPageBase.class)
-public class WebViewPage extends WebViewPageBase {
+@DeviceType(pageType = DeviceType.Type.ANDROID_PHONE, parentClass = ChartsPageBase.class)
+public class ChartsPage extends ChartsPageBase {
 
     @FindBy(xpath = "//*[@content-desc='Navigate up']")
     private ExtendedWebElement menuButton;
 
-    @FindBy(xpath = "//*[@text='Web View']")
-    private ExtendedWebElement webViewTitle;
+    @FindBy(xpath = "//*[@text='Charts']")
+    private ExtendedWebElement chartsTitle;
 
-    @FindBy(id = "lin")
-    private ExtendedWebElement linearLayout;
+    @FindBy(id = "chartView")
+    private ExtendedWebElement chartView;
 
-    public WebViewPage(WebDriver driver) {
+    public ChartsPage(WebDriver driver) {
         super(driver);
     }
 
     @Override
     public boolean isPageOpened(){
-        return webViewTitle.isElementPresent(IConstants.THREE_SECONDS_TIMEOUT) &&
-                linearLayout.isElementPresent(IConstants.THREE_SECONDS_TIMEOUT);
+        return chartsTitle.isElementPresent(IConstants.THREE_SECONDS_TIMEOUT) &&
+                chartView.isElementPresent(IConstants.THREE_SECONDS_TIMEOUT);
     }
 
     @Override

@@ -1,11 +1,12 @@
 package com.nickpopyk.carina.demo;
 
-import com.nickpopyk.carina.demo.mobile.gui.pages.common.RegisterPageBase;
-import com.nickpopyk.carina.demo.mobile.gui.pages.common.WebViewPageBase;
+import com.nickpopyk.carina.demo.mobile.gui.pages.common.*;
+import com.nickpopyk.carina.demo.service.MenuPageService;
+import com.nickpopyk.carina.demo.service.RegisterPageService;
 import com.qaprosoft.carina.core.foundation.IAbstractTest;
 import com.qaprosoft.carina.core.foundation.report.testrail.TestRailCases;
-import com.nickpopyk.carina.demo.mobile.gui.pages.common.HomePageBase;
 import com.qaprosoft.carina.core.foundation.utils.ownership.MethodOwner;
+import com.nickpopyk.carina.demo.utils.Pages;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -19,7 +20,7 @@ public class MobileTest implements IAbstractTest {
 
     @TestRailCases(testCasesId = "0001")
     @Test(description = "Verification of home page and register page")
-    @MethodOwner(owner = "nickpopyk")
+    @MethodOwner(owner = "nick0der")
     public void testHomePageAndRegisterPage(){
         SoftAssert softAssert = new SoftAssert();
 
@@ -60,7 +61,7 @@ public class MobileTest implements IAbstractTest {
 
     @TestRailCases(testCasesId = "0002")
     @Test(description = "Verify if sign up button is clickable without filling one field, with filling all fields")
-    @MethodOwner(owner = "nickpopyk")
+    @MethodOwner(owner = "nick0der")
     public void testSignUpFormWithoutOneField(){
         String name = "John";
         String password = RandomStringUtils.random(10, "abcdefghijklmnopqrstuvwxyz1234567890_-.");
@@ -95,6 +96,31 @@ public class MobileTest implements IAbstractTest {
         Assert.assertTrue(webViewPage.isPageOpened());
     }
 
+    @TestRailCases(testCasesId = "0003")
+    @Test(description = "Verify side bar menu")
+    @MethodOwner(owner = "nick0der")
+    public void testSideBarPage(){
+        String name = "John";
+        String password = RandomStringUtils.random(10, "abcdefghijklmnopqrstuvwxyz1234567890_-.");
+        String gender = "Male";
+
+        RegisterPageService registerPageService = new RegisterPageService(openRegisterPage());
+        WebViewPageBase webViewPage = registerPageService.register(name, password, gender);
+        Assert.assertTrue(webViewPage.isPageOpened(), "[WebView Page] WebView page is not opened");
+
+        MenuPageBase menuPage = webViewPage.openMenuPage();
+        Assert.assertTrue(menuPage.isPageOpened(), "[Menu Page] Menu page is not opened");
+
+        //Verify if each element in menu bar is present and opens corresponding page
+        MenuPageService menuPageService = new MenuPageService(menuPage);
+        for (Pages page : Pages.values()) {
+            Assert.assertTrue(menuPage.isMenuItemByTextPresent(page.getValue()), "[Menu Page] Item '" + page.getValue() + "' is not present");
+            ContentPageBase contentPage = menuPageService.openPage(page);
+            Assert.assertTrue(contentPage.isPageOpened(), "[Menu Page]" + page.getValue() + " page is not opened");
+            contentPage.openMenuPage();
+        }
+    }
+
     private RegisterPageBase openRegisterPage(){
         HomePageBase homePage = initPage(getDriver(), HomePageBase.class);
         Assert.assertTrue(homePage.isPageOpened(), "[Home page] Home page is not opened");
@@ -102,5 +128,4 @@ public class MobileTest implements IAbstractTest {
         Assert.assertTrue(registerPage.isPageOpened(), "[Register page] Register page is not opened");
         return registerPage;
     }
-
 }

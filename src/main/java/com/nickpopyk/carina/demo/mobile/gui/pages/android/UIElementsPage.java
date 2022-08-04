@@ -1,33 +1,33 @@
 package com.nickpopyk.carina.demo.mobile.gui.pages.android;
 
 import com.nickpopyk.carina.demo.mobile.gui.pages.common.MenuPageBase;
-import com.nickpopyk.carina.demo.mobile.gui.pages.common.WebViewPageBase;
+import com.nickpopyk.carina.demo.mobile.gui.pages.common.UIElementsPageBase;
 import com.nickpopyk.carina.demo.utils.IConstants;
 import com.qaprosoft.carina.core.foundation.utils.factory.DeviceType;
 import com.qaprosoft.carina.core.foundation.webdriver.decorator.ExtendedWebElement;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
 
-@DeviceType(pageType = DeviceType.Type.ANDROID_PHONE, parentClass = WebViewPageBase.class)
-public class WebViewPage extends WebViewPageBase {
+@DeviceType(pageType = DeviceType.Type.ANDROID_PHONE, parentClass = UIElementsPageBase.class)
+public class UIElementsPage extends UIElementsPageBase {
 
     @FindBy(xpath = "//*[@content-desc='Navigate up']")
     private ExtendedWebElement menuButton;
 
-    @FindBy(xpath = "//*[@text='Web View']")
-    private ExtendedWebElement webViewTitle;
+    @FindBy(xpath = "//*[@text='UI elements']")
+    private ExtendedWebElement uiElementsTitle;
 
-    @FindBy(id = "lin")
-    private ExtendedWebElement linearLayout;
+    @FindBy(id = "editText")
+    private ExtendedWebElement textInput;
 
-    public WebViewPage(WebDriver driver) {
+    public UIElementsPage(WebDriver driver) {
         super(driver);
     }
 
     @Override
     public boolean isPageOpened(){
-        return webViewTitle.isElementPresent(IConstants.THREE_SECONDS_TIMEOUT) &&
-                linearLayout.isElementPresent(IConstants.THREE_SECONDS_TIMEOUT);
+        return uiElementsTitle.isElementPresent(IConstants.THREE_SECONDS_TIMEOUT) &&
+                textInput.isElementPresent(IConstants.THREE_SECONDS_TIMEOUT);
     }
 
     @Override
