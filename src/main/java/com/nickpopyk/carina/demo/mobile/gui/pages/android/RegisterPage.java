@@ -108,39 +108,13 @@ public class RegisterPage extends RegisterPageBase {
     }
 
     @Override
-    public void fillFormExceptNameField() {
-        passwordInput.type("123456789");
-        itemByText.format("Male").check();
-        agreeCheckbox.check();
+    public void typeName(String name){
+        nameInput.type(name);
     }
 
     @Override
-    public void fillFormExceptPasswordField() {
-        nameInput.type("John");
-        itemByText.format("Male").check();
-        agreeCheckbox.check();
-    }
-
-    @Override
-    public void fillFormExceptRadioButtons() {
-        nameInput.type("John");
-        passwordInput.type("123456789");
-        agreeCheckbox.check();
-    }
-
-    @Override
-    public void fillFormExceptCheckbox() {
-        nameInput.type("John");
-        passwordInput.type("123456789");
-        itemByText.format("Male").check();
-    }
-
-    @Override
-    public void fillForm() {
-        nameInput.type("John");
-        passwordInput.type("123456789");
-        itemByText.format("Male").check();
-        agreeCheckbox.check();
+    public void typePassword(String name){
+        passwordInput.type(name);
     }
 
     @Override

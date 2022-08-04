@@ -1,6 +1,5 @@
 package com.nickpopyk.carina.demo.mobile.gui.pages.android;
 
-import com.nickpopyk.carina.demo.mobile.gui.pages.common.RegisterPageBase;
 import com.nickpopyk.carina.demo.mobile.gui.pages.common.WebViewPageBase;
 import com.nickpopyk.carina.demo.utils.IConstants;
 import com.qaprosoft.carina.core.foundation.utils.factory.DeviceType;
@@ -11,8 +10,11 @@ import org.openqa.selenium.support.FindBy;
 @DeviceType(pageType = DeviceType.Type.ANDROID_PHONE, parentClass = WebViewPageBase.class)
 public class WebViewPage extends WebViewPageBase {
 
-    @FindBy(xpath = "//*[@text = '%s']")
-    private ExtendedWebElement itemByText;
+    @FindBy(xpath = "//*[@text = 'Web View']")
+    private ExtendedWebElement webView;
+
+    @FindBy(id = "lin")
+    private ExtendedWebElement layout;
 
     public WebViewPage(WebDriver driver) {
         super(driver);
@@ -20,6 +22,7 @@ public class WebViewPage extends WebViewPageBase {
 
     @Override
     public boolean isPageOpened(){
-        return itemByText.format("Web View").isElementPresent(IConstants.THREE_SECONDS_TIMEOUT);
+        return webView.isElementPresent(IConstants.THREE_SECONDS_TIMEOUT) &&
+                layout.isElementPresent(IConstants.THREE_SECONDS_TIMEOUT);
     }
 }

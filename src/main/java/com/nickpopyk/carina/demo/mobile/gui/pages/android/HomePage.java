@@ -33,7 +33,7 @@ public class HomePage extends HomePageBase {
 
     @Override
     public boolean isPageOpened(){
-        return carinaLogo.isElementPresent(IConstants.THREE_SECONDS_TIMEOUT) && nextButton.isElementPresent();
+        return carinaLogo.isElementPresent(IConstants.THREE_SECONDS_TIMEOUT) && nextButton.isElementPresent(IConstants.THREE_SECONDS_TIMEOUT);
     }
 
     @Override

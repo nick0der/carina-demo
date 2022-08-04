@@ -30,15 +30,9 @@ public abstract class RegisterPageBase extends AbstractPage {
 
     public abstract boolean isItemByTextPresent(String text);
 
-    public abstract void fillFormExceptNameField();
-
-    public abstract void fillFormExceptPasswordField();
-
-    public abstract void fillFormExceptRadioButtons();
-
-    public abstract void fillFormExceptCheckbox();
-
-    public abstract void fillForm();
-
     public abstract WebViewPageBase clickSignUpButton();
+
+    public abstract void typeName(String name);
+
+    public abstract void typePassword(String password);
 }

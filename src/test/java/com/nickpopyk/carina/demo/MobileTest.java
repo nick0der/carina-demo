@@ -6,6 +6,7 @@ import com.qaprosoft.carina.core.foundation.IAbstractTest;
 import com.qaprosoft.carina.core.foundation.report.testrail.TestRailCases;
 import com.nickpopyk.carina.demo.mobile.gui.pages.common.HomePageBase;
 import com.qaprosoft.carina.core.foundation.utils.ownership.MethodOwner;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
@@ -20,7 +21,6 @@ public class MobileTest implements IAbstractTest {
     @Test(description = "Verification of home page and register page")
     @MethodOwner(owner = "nickpopyk")
     public void testHomePageAndRegisterPage(){
-
         SoftAssert softAssert = new SoftAssert();
 
         HomePageBase homePage = initPage(getDriver(), HomePageBase.class);
@@ -59,47 +59,37 @@ public class MobileTest implements IAbstractTest {
     }
 
     @TestRailCases(testCasesId = "0002")
-    @Test(description = "Verify if sign up button is clickable without filling name field")
+    @Test(description = "Verify if sign up button is clickable without filling one field, with filling all fields")
     @MethodOwner(owner = "nickpopyk")
-    public void testSignUpFormWithoutNameField(){
+    public void testSignUpFormWithoutOneField(){
+        String name = "John";
+        String password = RandomStringUtils.random(10, "abcdefghijklmnopqrstuvwxyz1234567890_-.");
+        String gender = "Male";
         RegisterPageBase registerPage = openRegisterPage();
-        registerPage.fillFormExceptNameField();
-        Assert.assertFalse(registerPage.isSignUpButtonClickable(), "[Register page] Sign up button should not be clickable");
-    }
 
-    @TestRailCases(testCasesId = "0003")
-    @Test(description = "Verify if sign up button is clickable without filling password field")
-    @MethodOwner(owner = "nickpopyk")
-    public void testSignUpFormWithoutPasswordField(){
-        RegisterPageBase registerPage = openRegisterPage();
-        registerPage.fillFormExceptPasswordField();
+        //If button is clickable without choosing radio button
+        registerPage.typeName(name);
+        registerPage.typePassword(password);
+        registerPage.checkAgreeCheckbox(true);
         Assert.assertFalse(registerPage.isSignUpButtonClickable(), "[Register page] Sign up button should not be clickable");
-    }
 
-    @TestRailCases(testCasesId = "0004")
-    @Test(description = "Verify if sign up button is clickable without selecting gender radio button")
-    @MethodOwner(owner = "nickpopyk")
-    public void testSignUpFormWithoutRadioButtons(){
-        RegisterPageBase registerPage = openRegisterPage();
-        registerPage.fillFormExceptRadioButtons();
+        //If button is clickable without filling name
+        registerPage.typeName("");
+        registerPage.clickRadioButtonByText(gender);
         Assert.assertFalse(registerPage.isSignUpButtonClickable(), "[Register page] Sign up button should not be clickable");
-    }
 
-    @TestRailCases(testCasesId = "0005")
-    @Test(description = "Verify if sign up button is clickable without checking checkbox")
-    @MethodOwner(owner = "nickpopyk")
-    public void testSignUpFormWithoutCheckbox(){
-        RegisterPageBase registerPage = openRegisterPage();
-        registerPage.fillFormExceptCheckbox();
+        //If button is clickable without filling password
+        registerPage.typeName(name);
+        registerPage.typePassword("");
         Assert.assertFalse(registerPage.isSignUpButtonClickable(), "[Register page] Sign up button should not be clickable");
-    }
 
-    @TestRailCases(testCasesId = "0006")
-    @Test(description = "Verify sign up form with valid data")
-    @MethodOwner(owner = "nickpopyk")
-    public void testSignUpFormValid(){
-        RegisterPageBase registerPage = openRegisterPage();
-        registerPage.fillForm();
+        //If button is clickable without filling checkbox
+        registerPage.typePassword(password);
+        registerPage.checkAgreeCheckbox(false);
+        Assert.assertFalse(registerPage.isSignUpButtonClickable(), "[Register page] Sign up button should not be clickable");
+
+        //Fill form and open a new page
+        registerPage.checkAgreeCheckbox(true);
         Assert.assertTrue(registerPage.isSignUpButtonClickable(), "[Register page] Sign up button should be clickable");
         WebViewPageBase webViewPage = registerPage.clickSignUpButton();
         Assert.assertTrue(webViewPage.isPageOpened());
