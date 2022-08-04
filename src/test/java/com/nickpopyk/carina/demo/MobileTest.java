@@ -1,12 +1,11 @@
 package com.nickpopyk.carina.demo;
 
 import com.nickpopyk.carina.demo.mobile.gui.pages.common.*;
-import com.nickpopyk.carina.demo.service.MenuPageService;
 import com.nickpopyk.carina.demo.service.RegisterPageService;
+import com.nickpopyk.carina.demo.utils.Pages;
 import com.qaprosoft.carina.core.foundation.IAbstractTest;
 import com.qaprosoft.carina.core.foundation.report.testrail.TestRailCases;
 import com.qaprosoft.carina.core.foundation.utils.ownership.MethodOwner;
-import com.nickpopyk.carina.demo.utils.Pages;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -108,16 +107,15 @@ public class MobileTest implements IAbstractTest {
         WebViewPageBase webViewPage = registerPageService.register(name, password, gender);
         Assert.assertTrue(webViewPage.isPageOpened(), "[WebView Page] WebView page is not opened");
 
-        MenuPageBase menuPage = webViewPage.openMenuPage();
+        SidebarMenuPageBase menuPage = webViewPage.openSidebarMenuPage();
         Assert.assertTrue(menuPage.isPageOpened(), "[Menu Page] Menu page is not opened");
 
         //Verify if each element in menu bar is present and opens corresponding page
-        MenuPageService menuPageService = new MenuPageService(menuPage);
         for (Pages page : Pages.values()) {
-            Assert.assertTrue(menuPage.isMenuItemByTextPresent(page.getValue()), "[Menu Page] Item '" + page.getValue() + "' is not present");
-            ContentPageBase contentPage = menuPageService.openPage(page);
-            Assert.assertTrue(contentPage.isPageOpened(), "[Menu Page]" + page.getValue() + " page is not opened");
-            contentPage.openMenuPage();
+            Assert.assertTrue(menuPage.isMenuItemPresent(page), String.format("[Menu Page] Item '%s' is not present",  page.getValue()));
+            ContentPageBase contentPage = menuPage.openContentPage(page);
+            Assert.assertTrue(contentPage.isPageOpened(), String.format("[Menu Page] %s page is not opened",  page.getValue()));
+            contentPage.openSidebarMenuPage();
         }
     }
 

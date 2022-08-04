@@ -1,6 +1,6 @@
 package com.nickpopyk.carina.demo.mobile.gui.pages.android;
 
-import com.nickpopyk.carina.demo.mobile.gui.pages.common.MenuPageBase;
+import com.nickpopyk.carina.demo.mobile.gui.pages.common.SidebarMenuPageBase;
 import com.nickpopyk.carina.demo.mobile.gui.pages.common.UIElementsPageBase;
 import com.nickpopyk.carina.demo.utils.IConstants;
 import com.qaprosoft.carina.core.foundation.utils.factory.DeviceType;
@@ -31,8 +31,8 @@ public class UIElementsPage extends UIElementsPageBase {
     }
 
     @Override
-    public MenuPageBase openMenuPage() {
+    public SidebarMenuPageBase openSidebarMenuPage() {
         menuButton.click();
-        return initPage(getDriver(), MenuPageBase.class);
+        return initPage(getDriver(), SidebarMenuPageBase.class);
     }
 }

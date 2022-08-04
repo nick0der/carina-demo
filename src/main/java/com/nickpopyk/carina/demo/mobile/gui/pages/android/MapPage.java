@@ -1,7 +1,7 @@
 package com.nickpopyk.carina.demo.mobile.gui.pages.android;
 
 import com.nickpopyk.carina.demo.mobile.gui.pages.common.MapPageBase;
-import com.nickpopyk.carina.demo.mobile.gui.pages.common.MenuPageBase;
+import com.nickpopyk.carina.demo.mobile.gui.pages.common.SidebarMenuPageBase;
 import com.nickpopyk.carina.demo.utils.IConstants;
 import com.qaprosoft.carina.core.foundation.utils.factory.DeviceType;
 import com.qaprosoft.carina.core.foundation.webdriver.decorator.ExtendedWebElement;
@@ -31,8 +31,8 @@ public class MapPage extends MapPageBase {
     }
 
     @Override
-    public MenuPageBase openMenuPage() {
+    public SidebarMenuPageBase openSidebarMenuPage() {
         menuButton.click();
-        return initPage(getDriver(), MenuPageBase.class);
+        return initPage(getDriver(), SidebarMenuPageBase.class);
     }
 }

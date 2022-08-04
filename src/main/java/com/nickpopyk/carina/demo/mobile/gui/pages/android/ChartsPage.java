@@ -1,7 +1,7 @@
 package com.nickpopyk.carina.demo.mobile.gui.pages.android;
 
 import com.nickpopyk.carina.demo.mobile.gui.pages.common.ChartsPageBase;
-import com.nickpopyk.carina.demo.mobile.gui.pages.common.MenuPageBase;
+import com.nickpopyk.carina.demo.mobile.gui.pages.common.SidebarMenuPageBase;
 import com.nickpopyk.carina.demo.utils.IConstants;
 import com.qaprosoft.carina.core.foundation.utils.factory.DeviceType;
 import com.qaprosoft.carina.core.foundation.webdriver.decorator.ExtendedWebElement;
@@ -25,14 +25,14 @@ public class ChartsPage extends ChartsPageBase {
     }
 
     @Override
-    public boolean isPageOpened(){
-        return chartsTitle.isElementPresent(IConstants.THREE_SECONDS_TIMEOUT) &&
-                chartView.isElementPresent(IConstants.THREE_SECONDS_TIMEOUT);
+    public SidebarMenuPageBase openSidebarMenuPage() {
+        menuButton.click();
+        return initPage(getDriver(), SidebarMenuPageBase.class);
     }
 
     @Override
-    public MenuPageBase openMenuPage() {
-        menuButton.click();
-        return initPage(getDriver(), MenuPageBase.class);
+    public boolean isPageOpened(){
+        return chartsTitle.isElementPresent(IConstants.THREE_SECONDS_TIMEOUT) &&
+                chartView.isElementPresent(IConstants.THREE_SECONDS_TIMEOUT);
     }
 }
