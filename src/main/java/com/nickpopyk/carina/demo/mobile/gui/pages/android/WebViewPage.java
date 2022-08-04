@@ -14,7 +14,7 @@ public class WebViewPage extends WebViewPageBase {
     private ExtendedWebElement webView;
 
     @FindBy(id = "lin")
-    private ExtendedWebElement layout;
+    private ExtendedWebElement linearLayout;
 
     public WebViewPage(WebDriver driver) {
         super(driver);
@@ -23,6 +23,6 @@ public class WebViewPage extends WebViewPageBase {
     @Override
     public boolean isPageOpened(){
         return webView.isElementPresent(IConstants.THREE_SECONDS_TIMEOUT) &&
-                layout.isElementPresent(IConstants.THREE_SECONDS_TIMEOUT);
+                linearLayout.isElementPresent(IConstants.THREE_SECONDS_TIMEOUT);
     }
 }
