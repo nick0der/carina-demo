@@ -1,9 +1,9 @@
 package com.nickpopyk.wish.demo.mobile.gui.pages.common;
 
-import com.qaprosoft.carina.core.gui.AbstractPage;
+import com.nickpopyk.wish.demo.utils.WishAbstractPage;
 import org.openqa.selenium.WebDriver;
 
-public abstract class HomePageBase extends AbstractPage {
+public abstract class HomePageBase extends WishAbstractPage {
 
     public HomePageBase(WebDriver driver) {
         super(driver);

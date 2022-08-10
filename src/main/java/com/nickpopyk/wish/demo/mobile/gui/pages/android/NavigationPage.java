@@ -11,7 +11,7 @@ import org.openqa.selenium.support.FindBy;
 @DeviceType(pageType = DeviceType.Type.ANDROID_PHONE, parentClass = NavigationPageBase.class)
 public class NavigationPage extends NavigationPageBase {
 
-    @FindBy(xpath = "//*[contains(@resource-id, 'bottom_nav_dest_text') and @text='%s']/parent::*[contains(@class, 'android.view.ViewGroup')]")
+    @FindBy(xpath = "//*[contains(@resource-id, 'bottom_nav_view')]//*[contains(@text, '%s')]")
     ExtendedWebElement menuItemByText;
 
     public NavigationPage(WebDriver driver) {

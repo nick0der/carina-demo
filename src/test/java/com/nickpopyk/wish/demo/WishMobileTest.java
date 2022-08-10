@@ -7,8 +7,11 @@ import com.qaprosoft.carina.core.foundation.utils.ownership.MethodOwner;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.util.List;
+
 import static com.nickpopyk.wish.demo.utils.Categories.FASHION;
 import static com.nickpopyk.wish.demo.utils.IConstants.*;
+import static com.nickpopyk.wish.demo.utils.Pages.CART;
 import static com.nickpopyk.wish.demo.utils.Pages.CATEGORIES;
 
 public class WishMobileTest implements IAbstractTest {
@@ -59,5 +62,35 @@ public class WishMobileTest implements IAbstractTest {
 
         // Remove product from cart
         Assert.assertTrue(cartPage.removeFromCart(0), "[Cart page] Product is not removed");
+    }
+
+    @TestRailCases(testCasesId = "0002")
+    @Test(description = "Test cart scrolling")
+    @MethodOwner(owner = "nick0der")
+    public void testCartScroll() {
+        String email = "thistestn123@gmail.com";
+        String password = "thistest123";
+
+        NotificationPageBase notificationPage = initPage(getDriver(), NotificationPageBase.class);
+        Assert.assertTrue(notificationPage.isPageOpened(), "[Notification page] Notification page is not opened");
+        Assert.assertTrue(notificationPage.isPermissionAllowButtonPresent(), "[Notification page] Permission allow button is not present");
+        Assert.assertTrue(notificationPage.isPermissionDenyButtonPresent(), " [Notification page] Permission deny button is not present");
+        LoginPageBase loginPage = notificationPage.clickPermissionAllowButton();
+
+        // Login and open home page
+        HomePageBase homePage = loginPage.login(email, password);
+        pause(THIRTY_SECONDS_TIMEOUT);
+        Assert.assertTrue(homePage.isPageOpened(), "[Home page] Home Page is not opened");
+
+        // Open cart page
+        NavigationPageBase navigationPage = initPage(getDriver(), NavigationPageBase.class);
+        CartPageBase cartPage = navigationPage.navigateToPage(CART);
+        cartPage.waitForLoading();
+        Assert.assertTrue(cartPage.isPageOpened(), "[Home page] Cart page is not opened");
+
+        List<List<String>> productInfo = cartPage.getProductsInfo();
+        for (List<String> product: productInfo) {
+            System.out.println(product.get(0) + " : " + product.get(1));
+        }
     }
 }
