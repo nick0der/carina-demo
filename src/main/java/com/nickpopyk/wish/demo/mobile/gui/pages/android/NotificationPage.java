@@ -11,13 +11,13 @@ import org.openqa.selenium.support.FindBy;
 @DeviceType(pageType = DeviceType.Type.ANDROID_PHONE, parentClass = NotificationPageBase.class)
 public class NotificationPage extends NotificationPageBase {
 
-    @FindBy(id = "com.android.permissioncontroller:id/permission_allow_button")
+    @FindBy(id = "com.android.permissioncontroller:id/grant_dialog")
     private ExtendedWebElement dialogWindow;
 
     @FindBy(id = "com.android.permissioncontroller:id/permission_allow_button")
     private ExtendedWebElement permissionAllowButton;
 
-    @FindBy(id = "com.android.permissioncontroller:id/permission_allow_button")
+    @FindBy(id = "com.android.permissioncontroller:id/permission_deny_button")
     private ExtendedWebElement permissionDenyButton;
 
     public NotificationPage(WebDriver driver) {
