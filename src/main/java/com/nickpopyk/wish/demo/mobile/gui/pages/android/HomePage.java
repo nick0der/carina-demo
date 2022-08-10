@@ -10,7 +10,7 @@ import org.openqa.selenium.support.FindBy;
 public class HomePage extends HomePageBase {
 
     @FindBy(id = "com.contextlogic.wish:id/homepage_v2_logo")
-    ExtendedWebElement homePageLogo;
+    private ExtendedWebElement homePageLogo;
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -18,7 +18,7 @@ public class HomePage extends HomePageBase {
 
     @Override
     public boolean isPageOpened(){
-        return homePageLogo.isElementPresent();
+        return homePageLogo.isElementPresent(THREE_SECONDS_TIMEOUT);
     }
 
 }

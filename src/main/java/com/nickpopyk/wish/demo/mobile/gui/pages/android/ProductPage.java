@@ -7,6 +7,7 @@ import com.qaprosoft.carina.core.foundation.webdriver.decorator.ExtendedWebEleme
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,34 +16,31 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static com.nickpopyk.wish.demo.utils.IConstants.FIVE_SECONDS_TIMEOUT;
-import static com.nickpopyk.wish.demo.utils.IConstants.THREE_SECONDS_TIMEOUT;
-
 @DeviceType(pageType = DeviceType.Type.ANDROID_PHONE, parentClass = ProductPageBase.class)
 public class ProductPage extends ProductPageBase {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
     @FindBy(xpath = "//*[contains(@resource-id, 'drawer_activity_toolbar')]/*[contains(@class, 'android.widget.LinearLayout')]/*[contains(@class, 'android.widget.TextView')]")
-    ExtendedWebElement detailsTitle;
+    private ExtendedWebElement detailsTitle;
 
     @FindBy(id = "com.contextlogic.wish:id/bottom_nav_cart_icon")
-    ExtendedWebElement cartIcon;
+    private ExtendedWebElement cartIcon;
 
     @FindBy(id = "com.contextlogic.wish:id/product_title_text_view")
-    ExtendedWebElement productTitle;
+    private ExtendedWebElement productTitle;
 
     @FindBy(id = "com.contextlogic.wish:id/add_to_cart_button")
-    ExtendedWebElement addToCartButton;
+    private ExtendedWebElement addToCartButton;
 
     @FindBy(xpath = "//*[contains(@resource-id, 'recycler_view')]")
-    ExtendedWebElement selectMenuWindow;
+    private ExtendedWebElement selectMenuWindow;
 
     @FindBy(id = "com.contextlogic.wish:id/add_to_cart_offer_dialog_button")
-    ExtendedWebElement offerDialogButton;
+    private ExtendedWebElement offerDialogButton;
 
     @FindBy(xpath = "//*[contains(@resource-id, 'end_button')]")
-    ExtendedWebElement closeButton;
+    private ExtendedWebElement closeButton;
 
     public ProductPage(WebDriver driver) {
         super(driver);
@@ -51,6 +49,21 @@ public class ProductPage extends ProductPageBase {
     @Override
     public boolean isPageOpened(){
         return detailsTitle.isElementPresent() && Objects.equals(detailsTitle.getText(), "Details");
+    }
+
+    @Override
+    public boolean isCartIconPresent(){
+        return cartIcon.isElementPresent(THREE_SECONDS_TIMEOUT);
+    }
+
+    @Override
+    public boolean isProductTitlePresent(){
+        return productTitle.isElementPresent(THREE_SECONDS_TIMEOUT);
+    }
+
+    @Override
+    public boolean isAddToCartButtonPresent(){
+        return addToCartButton.isElementPresent(THREE_SECONDS_TIMEOUT);
     }
 
     @Override
@@ -71,9 +84,9 @@ public class ProductPage extends ProductPageBase {
                 if (sideInfo.isElementPresent()) { //Find first available option
                     ExtendedWebElement optionToChoose = optionList.get(i).findExtendedWebElements(By.xpath(".//*[contains(@resource-id, 'add_to_cart_dialog_fragment_row_option')]")).get(i);
                     productCharacteristics.add(optionToChoose.getText());
-                    optionToChoose.click();
                     LOGGER.info("selecting '" + optionToChoose.getText() + "' option");
-                    pause(FIVE_SECONDS_TIMEOUT);
+                    optionToChoose.click();
+                    pause(ONE_SECOND_TIMEOUT);
                     foundAvailableOption = true;
                     break;
                 }
@@ -96,7 +109,8 @@ public class ProductPage extends ProductPageBase {
     }
 
     @Override
-    public String readProductTitle(){
+    public String getProductTitle(){
+        waitUntil(ExpectedConditions.visibilityOfElementLocated(productTitle.getBy()), THREE_SECONDS_TIMEOUT);
         return productTitle.getText();
     }
 }

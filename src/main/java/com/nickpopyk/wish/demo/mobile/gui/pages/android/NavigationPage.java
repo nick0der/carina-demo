@@ -12,10 +12,15 @@ import org.openqa.selenium.support.FindBy;
 public class NavigationPage extends NavigationPageBase {
 
     @FindBy(xpath = "//*[contains(@resource-id, 'bottom_nav_view')]//*[contains(@text, '%s')]")
-    ExtendedWebElement menuItemByText;
+    private ExtendedWebElement menuItemByText;
 
     public NavigationPage(WebDriver driver) {
         super(driver);
+    }
+
+    @Override
+    public boolean isNavigationItemPresent(Pages page){
+        return menuItemByText.format(page.getValue()).isElementPresent(THREE_SECONDS_TIMEOUT);
     }
 
     @Override

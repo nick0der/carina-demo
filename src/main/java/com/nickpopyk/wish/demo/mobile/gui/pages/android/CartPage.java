@@ -15,37 +15,37 @@ import java.util.stream.Collectors;
 public class CartPage extends CartPageBase {
 
     @FindBy (xpath = "//*[contains(@resource-id, 'drawer_activity_toolbar')]//*[contains(@class, 'android.widget.TextView')]")
-    ExtendedWebElement cartTitle;
+    private ExtendedWebElement cartTitle;
 
     @FindBy(xpath = "//*[contains(@resource-id, 'list')]")
-    ExtendedWebElement cartListContainer;
+    private ExtendedWebElement cartListContainer;
 
     @FindBy(xpath = "//*[contains(@resource-id, 'list')]/child::*[contains(@class, 'android.view.ViewGroup')]")
-    List<ExtendedWebElement> cartList;
+    private List<ExtendedWebElement> cartList;
 
     @FindBy(id = "com.contextlogic.wish:id/cart_fragment_loading_view")
-    ExtendedWebElement cartLoadingView;
+    private ExtendedWebElement cartLoadingView;
 
     @FindBy(xpath = "//*[contains(@resource-id, 'multi_button_dialog_fragment_choices_container')]/child::*[contains(@class, 'android.widget.Button')]")
-    ExtendedWebElement confirmRemoveButton;
+    private ExtendedWebElement confirmRemoveButton;
 
     @FindBy(xpath = "//*[contains(@resource-id, 'list')]//*[contains(@resource-id, 'cart_fragment_cart_items_item_row_title')]")
-    List<ExtendedWebElement> productTitles;
+    private List<ExtendedWebElement> productTitles;
 
     @FindBy(xpath = "//*[contains(@resource-id, 'list')]//*[contains(@resource-id, 'cart_fragment_cart_items_item_row_size_color_text')]")
-    List<ExtendedWebElement> productCharacteristics;
+    private List<ExtendedWebElement> productCharacteristics;
 
     @FindBy(xpath = "//*[contains(@resource-id, 'list')]//*[contains(@resource-id, 'cart_fragment_cart_items_item_row_title') or contains(@resource-id, 'cart_fragment_cart_items_item_row_size_color_text')]")
-    List<ExtendedWebElement> productInfo;
+    private List<ExtendedWebElement> productInfo;
 
     @FindBy(xpath = "//*[contains(@resource-id, 'cart_payment_structure_view')]")
-    ExtendedWebElement cartPaymentStructureView;
+    private ExtendedWebElement cartPaymentStructureView;
 
     @FindBy(xpath = "//*[contains(@resource-id, 'header_view_section_title') and @text='Items in cart']")
-    ExtendedWebElement itemsInCartTitle;
+    private ExtendedWebElement itemsInCartTitle;
 
     @FindBy(xpath = "//*[contains(@resource-id, 'empty_message')]")
-    ExtendedWebElement emptyMessage;
+    private ExtendedWebElement emptyMessage;
 
     public CartPage(WebDriver driver) {
         super(driver);
@@ -54,6 +54,11 @@ public class CartPage extends CartPageBase {
     @Override
     public boolean isPageOpened(){
         return cartLoadingView.isElementPresent();
+    }
+
+    @Override
+    public boolean isCartTitlePresent(){
+        return cartTitle.isElementPresent(FIVE_SECONDS_TIMEOUT);
     }
 
     @Override
@@ -79,7 +84,7 @@ public class CartPage extends CartPageBase {
         }
 
         while (!cartPaymentStructureView.isElementPresent()){
-            swipeInContainer(cartListContainer, Direction.UP, 1, 1000);
+            swipeInContainer(cartListContainer, Direction.UP, ONE_TIME_SWIPE, THOUSAND_DURATION_TIME);
 
             List<String> visibleTitles =  productTitles.stream().map(ExtendedWebElement::getText).collect(Collectors.toList());
             List<String> visibleCharacteristics = productCharacteristics.stream().map(ExtendedWebElement::getText).collect(Collectors.toList());
@@ -108,7 +113,7 @@ public class CartPage extends CartPageBase {
     }
 
     @Override
-    public String readTitleOfCartElement(int index){
+    public String getTitleOfCartElement(int index){
         ExtendedWebElement itemTitle = cartList.get(index).findExtendedWebElement(By.xpath(".//*[contains(@resource-id, 'cart_fragment_cart_items_item_row_title')]"));
         return itemTitle.getText();
     }
@@ -125,9 +130,9 @@ public class CartPage extends CartPageBase {
         itemToDelete.getElement().isDisplayed();
         ExtendedWebElement deleteButton = itemToDelete.findExtendedWebElement(By.xpath(".//*[contains(@resource-id, 'cart_fragment_cart_items_remove_button')]"));
         deleteButton.click();
-        pause(THREE_SECONDS_TIMEOUT);
+        waitUntil(ExpectedConditions.visibilityOfElementLocated(confirmRemoveButton.getBy()), THREE_SECONDS_TIMEOUT);
         confirmRemoveButton.click();
-        pause(THREE_SECONDS_TIMEOUT);
+        waitUntil(ExpectedConditions.visibilityOfElementLocated(cartTitle.getBy()), THREE_SECONDS_TIMEOUT);
         return true;
     }
 

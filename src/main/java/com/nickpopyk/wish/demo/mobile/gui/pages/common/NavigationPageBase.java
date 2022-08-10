@@ -11,6 +11,8 @@ public abstract class NavigationPageBase extends WishAbstractPage {
         super(driver);
     }
 
+    public abstract boolean isNavigationItemPresent(Pages page);
+
     public abstract <T extends AbstractPage> T navigateToPage(Pages page);
 
 }

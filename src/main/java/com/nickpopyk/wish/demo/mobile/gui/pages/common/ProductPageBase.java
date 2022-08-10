@@ -8,9 +8,15 @@ public abstract class ProductPageBase extends WishAbstractPage {
         super(driver);
     }
 
+    public abstract boolean isCartIconPresent();
+
+    public abstract boolean isProductTitlePresent();
+
+    public abstract boolean isAddToCartButtonPresent();
+
     public abstract String addToCart();
 
     public abstract CartPageBase navigateToCart();
 
-    public abstract String readProductTitle();
+    public abstract String getProductTitle();
 }

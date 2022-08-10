@@ -6,6 +6,7 @@ import com.qaprosoft.carina.core.foundation.utils.factory.DeviceType;
 import com.qaprosoft.carina.core.foundation.webdriver.decorator.ExtendedWebElement;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,32 +19,37 @@ public class CategoryPage extends CategoryPageBase {
     private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
     @FindBy(xpath = "//*[contains(@resource-id, 'drawer_activity_toolbar')]/*[contains(@class, 'android.widget.LinearLayout')]/*[contains(@class, 'android.widget.TextView')]")
-    ExtendedWebElement categoryTitle;
+    private ExtendedWebElement categoryTitle;
 
     @FindBy(xpath = "//*[contains(@resource-id, 'top_text_view')]")
-    ExtendedWebElement topTextView;
+    private ExtendedWebElement topTextView;
 
     @FindBy(xpath = "//*[contains(@resource-id, 'recycler')]/*")
-    List<ExtendedWebElement> productsList;
+    private List<ExtendedWebElement> productsList;
 
     public CategoryPage(WebDriver driver) {
         super(driver);
     }
 
-    //TODO Add more checks
     @Override
     public boolean isPageOpened(){
-        return categoryTitle.isElementPresent() && topTextView.isElementPresent();
+        return categoryTitle.isElementPresent(THREE_SECONDS_TIMEOUT) && topTextView.isElementPresent(THREE_SECONDS_TIMEOUT);
     }
 
     @Override
-    public String readCategoryTitle(){
+    public boolean isProductListPresent(){
+        return productsList.get(0).isElementPresent(FIVE_SECONDS_TIMEOUT);
+    }
+
+    @Override
+    public String getCategoryTitle(){
         return categoryTitle.getText();
     }
 
     @Override
     public ProductPageBase chooseProduct(int index){
-        LOGGER.info("selecting product №" + index);
+        LOGGER.info("selecting product №" + index + " ...");
+        waitUntil(ExpectedConditions.visibilityOfElementLocated(productsList.get(0).getBy()), FIVE_SECONDS_TIMEOUT);
         ExtendedWebElement product =  productsList.get(index);
         product.click();
         return initPage(getDriver(), ProductPageBase.class);

@@ -10,9 +10,11 @@ public abstract class CartPageBase extends WishAbstractPage {
         super(driver);
     }
 
+    public abstract boolean isCartTitlePresent();
+
     public abstract List<List<String>> getProductsInfo();
 
-    public abstract String readTitleOfCartElement(int index);
+    public abstract String getTitleOfCartElement(int index);
 
     public abstract String readCharacteristicsOfCartElement(int index);
 

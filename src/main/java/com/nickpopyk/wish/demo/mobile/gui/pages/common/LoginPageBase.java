@@ -8,5 +8,11 @@ public abstract class LoginPageBase extends WishAbstractPage {
         super(driver);
     }
 
+    public abstract boolean isEmailInputPresent();
+
+    public abstract boolean isPasswordInputPresent();
+
+    public abstract boolean isSignInButtonPresent();
+
     public abstract HomePageBase login(String email, String password);
 }

@@ -11,16 +11,36 @@ import org.openqa.selenium.support.FindBy;
 public class LoginPage extends LoginPageBase {
 
     @FindBy(id = "com.contextlogic.wish:id/input")
-    ExtendedWebElement emailInput;
+    private ExtendedWebElement emailInput;
 
     @FindBy(id = "com.contextlogic.wish:id/passwordText")
-    ExtendedWebElement passwordInput;
+    private ExtendedWebElement passwordInput;
 
     @FindBy(id = "com.contextlogic.wish:id/signInButton")
-    ExtendedWebElement singInButton;
+    private ExtendedWebElement singInButton;
 
     public LoginPage(WebDriver driver) {
         super(driver);
+    }
+
+    @Override
+    public boolean isPageOpened(){
+        return singInButton.isElementPresent(THREE_SECONDS_TIMEOUT);
+    }
+
+    @Override
+    public boolean isEmailInputPresent(){
+        return emailInput.isElementPresent(THREE_SECONDS_TIMEOUT);
+    }
+
+    @Override
+    public boolean isPasswordInputPresent(){
+        return passwordInput.isElementPresent(THREE_SECONDS_TIMEOUT);
+    }
+
+    @Override
+    public boolean isSignInButtonPresent(){
+        return singInButton.isElementPresent(THREE_SECONDS_TIMEOUT);
     }
 
     @Override

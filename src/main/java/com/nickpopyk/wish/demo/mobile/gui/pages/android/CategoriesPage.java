@@ -7,6 +7,7 @@ import com.qaprosoft.carina.core.foundation.utils.factory.DeviceType;
 import com.qaprosoft.carina.core.foundation.webdriver.decorator.ExtendedWebElement;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,10 +21,14 @@ public class CategoriesPage extends CategoriesPageBase {
 
     @FindBy(xpath = "//*[contains(@resource-id, 'drawer_activity_toolbar_container')]/child::*/child::" +
             "*[contains(@class, 'android.widget.LinearLayout')]/child::*[contains(@text, 'Categories')]")
-    ExtendedWebElement categoriesLogo;
+    private ExtendedWebElement categoriesLogo;
 
     @FindBy(xpath = "//*[contains(@resource-id, 'categories_list')]/child::*/child::*[contains(@resource-id, 'title')]")
-    List<ExtendedWebElement> categoriesList;
+    private List<ExtendedWebElement> categoriesList;
+
+    @FindBy(xpath = "(//*[contains(@resource-id, 'categories_list')]/android.view.ViewGroup)[1]")
+    private ExtendedWebElement firstCategory;
+
 
 
     public CategoriesPage(WebDriver driver) {
@@ -38,6 +43,7 @@ public class CategoriesPage extends CategoriesPageBase {
     @Override
     public CategoryPageBase selectCategory(Categories category) {
         LOGGER.info("selecting '" + category.getValue() + "' category...");
+        waitUntil(ExpectedConditions.visibilityOfElementLocated(firstCategory.getBy()), FIVE_SECONDS_TIMEOUT);
 
         for (ExtendedWebElement categoryItem : categoriesList) {
             if (categoryItem.getText().equalsIgnoreCase(category.getValue())) {

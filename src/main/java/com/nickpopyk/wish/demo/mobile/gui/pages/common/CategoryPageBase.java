@@ -8,7 +8,9 @@ public abstract class CategoryPageBase extends WishAbstractPage {
         super(driver);
     }
 
-    public abstract String readCategoryTitle();
+    public abstract boolean isProductListPresent();
+
+    public abstract String getCategoryTitle();
 
     public abstract ProductPageBase chooseProduct(int index);
 }
