@@ -25,7 +25,7 @@ public class LoginPage extends LoginPageBase {
 
     @Override
     public boolean isPageOpened(){
-        return singInButton.isElementPresent(THREE_SECONDS_TIMEOUT);
+        return singInButton.isElementPresent(TEN_SECONDS_TIMEOUT);
     }
 
     @Override

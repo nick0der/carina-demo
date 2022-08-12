@@ -87,6 +87,48 @@ public class WishMobileTest implements IAbstractTest {
         );
     }
 
+    @TestRailCases(testCasesId = "0003")
+    @Test(description = "Test wishlist creating, renaming, deleting")
+    @MethodOwner(owner = "nick0der")
+    public void testWishlist() {
+        String wishlistName = "Buy for birthday3";
+        String renameTo = "Holiday list3";
+
+        HomePageBase homePage = openHomePage();
+
+        // Init and verify navigation menu
+        NavigationPageBase navigationPage = initPage(getDriver(), NavigationPageBase.class);
+        for (Pages page : Pages.values()) {
+            Assert.assertTrue(navigationPage.isNavigationItemPresent(page), String.format("[Home Page] Item '%s' is not present in navigation",  page.getValue()));
+        }
+
+        // Open menu page
+        MenuPageBase menuPage = navigationPage.navigateToPage(MENU);
+        Assert.assertTrue(menuPage.isPageOpened(), "[Home Page] Menu page is not opened");
+        Assert.assertTrue(menuPage.isWishlistButtonPresent(), "[Menu Page] Wishlist button is not present");
+
+        WishlistsPageBase wishlistsPage = menuPage.openWishlistsPage();
+        Assert.assertTrue(wishlistsPage.isPageOpened(), "[Menu Page] Wishlist page is not opened");
+
+        // Create wishlist
+        wishlistsPage.createNewWishlist(wishlistName);
+        Assert.assertTrue(wishlistsPage.isWishlistTitlePresentIncludingInvisible(wishlistName), "[Wishlist page] Wishlist '" + wishlistName + "' is not created");
+
+        // Rename wishlist
+        wishlistsPage.renameWishlist(wishlistName, renameTo);
+        Assert.assertFalse(wishlistsPage.isWishlistTitlePresent(wishlistName), "[Wishlist page] '" + wishlistName + "' wishlist should not be present");
+        Assert.assertTrue(wishlistsPage.isWishlistTitlePresent(renameTo), "[Wishlist page] '" + renameTo + "' wishlist is not present");
+
+        // Rename back
+        wishlistsPage.renameWishlist(renameTo, wishlistName);
+        Assert.assertFalse(wishlistsPage.isWishlistTitlePresent(renameTo), "[Wishlist page] '" + renameTo + "' wishlist should not be present");
+        Assert.assertTrue(wishlistsPage.isWishlistTitlePresent(wishlistName), "[Wishlist page] '" + wishlistName + "' wishlist is not present");
+
+        // Delete wishlist
+        wishlistsPage.deleteWishlist(wishlistName);
+        Assert.assertFalse(wishlistsPage.isWishlistTitlePresentIncludingInvisible(wishlistName), "[Wishlist page] '" + wishlistName + "' wishlist should be deleted");
+    }
+
     public HomePageBase openHomePage() {
         String email = "thistestn123@gmail.com";
         String password = "thistest123";
