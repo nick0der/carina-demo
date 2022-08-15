@@ -1,19 +1,24 @@
 package com.nickpopyk.web.demo;
 
 import com.nickpopyk.web.demo.gui.components.LoginPopUp;
-import com.nickpopyk.web.demo.gui.pages.NewsPage;
-import com.nickpopyk.web.demo.gui.pages.PhoneFinderPage;
-import com.nickpopyk.web.demo.gui.pages.ResultsPage;
+import com.nickpopyk.web.demo.gui.pages.*;
 import com.nickpopyk.web.demo.services.impls.LoginService;
 import com.qaprosoft.carina.core.foundation.IAbstractTest;
 import com.qaprosoft.carina.core.foundation.report.testrail.TestRailCases;
 import com.qaprosoft.carina.core.foundation.utils.ownership.MethodOwner;
-import com.nickpopyk.web.demo.gui.pages.HomePage;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 import org.apache.commons.lang3.StringUtils;
+
+import java.util.Comparator;
+import java.util.List;
+import java.util.Objects;
+import java.util.Random;
+import java.util.stream.Collectors;
+
+import static com.nickpopyk.web.demo.utils.IConstants.FIVE_SEC_TIMEOUT;
 
 public class WebTest implements IAbstractTest {
 
@@ -121,5 +126,46 @@ public class WebTest implements IAbstractTest {
         //Click 'click here' button and verify corresponding page is opened
         resultsPage.clickClickHereButton();
         Assert.assertTrue(phoneFinderPage.isPageOpened(), "Phone finder page is not opened");
+    }
+
+    @TestRailCases(testCasesId = "0004")
+    @Test(description = "Verify opinions on phone page")
+    @MethodOwner(owner = "nick0der")
+    public void testVerifyOpinionsOnPhonePage() {
+        String brand = "Apple";
+
+        // Open GSM Arena home page and login
+        HomePage homePage = new HomePage(getDriver());
+        homePage.open();
+        Assert.assertTrue(homePage.isPageOpened(), "Home page is not opened");
+        LoginPopUp loginPopUp = homePage.getTopNavbar().openLoginPopUp();
+        LoginService loginService = new LoginService(loginPopUp, getDriver());
+        loginService.login();
+
+        // Open brand phones page, then open first popular phone from this brand
+        PhonesPage phonesPage = homePage.getBrandsComponent().openBrandLink(brand);
+        Assert.assertTrue(phonesPage.isPageOpened(), "Page with " + brand + " phones is not opened");
+        phonesPage.selectPopularityTab();
+        String phoneTitle =  phonesPage.getFirstPhoneTitle();
+        PhonePage phonePage = phonesPage.openFirstPhone();
+        Assert.assertTrue(phonePage.isPageOpened(), "Phone page is not opened");
+        Assert.assertTrue(phonePage.getPhoneTitle().toLowerCase().contains(phoneTitle.toLowerCase()), "Phone title is wrong");
+
+        // Open reviews and verify sorting by 'Best rating'
+        ReviewsPage reviewsPage = phonePage.openOpinionsTab();
+        Assert.assertTrue(reviewsPage.isPageOpened(), "Reviews page is not opened");
+        reviewsPage.setSortBySelect("Best rating");
+        List<Integer> sorted = reviewsPage.getVotesList().stream().sorted(Comparator.reverseOrder()).collect(Collectors.toList());
+        Assert.assertEquals(reviewsPage.getVotesList(), sorted, "Reviews are not sorted correctly");
+
+
+        //TODO: check comment rating
+
+        // Rate and verify comment is rated
+//        int randomComment = new Random().nextInt(reviewsPage.getVotesList().size());
+//        int previousRating = reviewsPage.getVotesList().get(randomComment);
+//        int currentRating = reviewsPage.voteComment(randomComment);
+//        Assert.assertEquals(currentRating, previousRating + 1, "Comment is not rated");
+
     }
 }

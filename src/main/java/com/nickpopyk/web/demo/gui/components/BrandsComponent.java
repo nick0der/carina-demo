@@ -1,6 +1,7 @@
 package com.nickpopyk.web.demo.gui.components;
 
 import com.nickpopyk.web.demo.gui.pages.PhoneFinderPage;
+import com.nickpopyk.web.demo.gui.pages.PhonesPage;
 import com.qaprosoft.carina.core.foundation.webdriver.decorator.ExtendedWebElement;
 import com.qaprosoft.carina.core.gui.AbstractUIObject;
 import org.openqa.selenium.SearchContext;
@@ -32,10 +33,13 @@ public class BrandsComponent extends AbstractUIObject {
         return phoneFinderButton.isElementPresent(THREE_SEC_TIMEOUT);
     }
 
-    public void openBrandLink(String brand){
-        Objects.requireNonNull(brandLinks.stream().filter(link -> {
+    public PhonesPage openBrandLink(String brand){
+        ExtendedWebElement brandButton = Objects.requireNonNull(brandLinks.stream().filter(link -> {
             return brand.equalsIgnoreCase(link.getText());
-        }).findAny().orElse(null)).click();
+        }).findAny().orElse(null));
+        String brandUrl = brandButton.getAttribute("href");
+        brandButton.click();
+        return new PhonesPage(driver, brandUrl);
     }
 
     public PhoneFinderPage openPhoneFinder(){
