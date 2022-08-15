@@ -21,6 +21,33 @@ public class WebTest implements IAbstractTest {
     }
 
     @TestRailCases(testCasesId = "0001")
+    @Test(description = "Verify login")
+    @MethodOwner(owner = "nick0der")
+    public void testLogin() {
+        // Open GSM Arena home page and verify page is opened
+        HomePage homePage = new HomePage(getDriver());
+        homePage.open();
+        Assert.assertTrue(homePage.isPageOpened(), "Home page is not opened");
+        Assert.assertTrue(homePage.getTopNavbar().isLoginButtonPresent(), "Login button is not present");
+
+        // Open login popup and verify elements are present
+        LoginPopUp loginPopUp = homePage.getTopNavbar().openLoginPopUp();
+        Assert.assertTrue(homePage.getTopNavbar().isLoginPopUpPresent(), "Login popup is not present");
+        Assert.assertTrue(loginPopUp.isLoginTitlePresent(), "Login title is not present");
+        Assert.assertTrue(loginPopUp.isEmailTextFieldPresent(), "Email text field is not present");
+        Assert.assertTrue(loginPopUp.isPasswordTestFieldPresent(), "Password text field is not present");
+        Assert.assertTrue(loginPopUp.isSubmitButtonPresent(), "Submit button is not present");
+        Assert.assertTrue(loginPopUp.isForgotPasswordLinkPresent(), "'Forgot password' link  is not present");
+
+        // Login and verify login successful
+        LoginService loginService = new LoginService(loginPopUp, getDriver());
+        loginService.login();
+        Assert.assertTrue(homePage.isPageOpened(), "Home page is not opened");
+        Assert.assertTrue(homePage.getTopNavbar().isAccountButtonPresent(), "Login is not successful, account button is not present");
+    }
+
+
+    @TestRailCases(testCasesId = "0002")
     @Test(description = "Verify login and searching process", dataProvider = "search-data")
     @MethodOwner(owner = "nick0der")
     public void testVerifySearchingProcess(String searchText) {
@@ -32,29 +59,12 @@ public class WebTest implements IAbstractTest {
         Assert.assertTrue(homePage.isPageOpened(), "Home page is not opened");
         Assert.assertTrue(homePage.getTopNavbar().isLoginButtonPresent(), "Login button is not present");
 
-        // Open login popup and verify elements are present
-        LoginPopUp loginPopUp = homePage.getTopNavbar().openLoginPopUp();
-        softAssert.assertTrue(homePage.getTopNavbar().isLoginPopUpPresent(), "Login popup is not present");
-        softAssert.assertTrue(loginPopUp.isLoginTitlePresent(), "Login title is not present");
-        softAssert.assertTrue(loginPopUp.isEmailTextFieldPresent(), "Email text field is not present");
-        softAssert.assertTrue(loginPopUp.isPasswordTestFieldPresent(), "Password text field is not present");
-        softAssert.assertTrue(loginPopUp.isSubmitButtonPresent(), "Submit button is not present");
-        softAssert.assertTrue(loginPopUp.isForgotPasswordLinkPresent(), "'Forgot password' link  is not present");
-        softAssert.assertAll();
-
-        // Login and verify login successful
-        LoginService loginService = new LoginService(loginPopUp, getDriver());
-        loginService.login();
-        Assert.assertTrue(homePage.isPageOpened(), "Home page is not opened");
-        Assert.assertTrue(homePage.getTopNavbar().isAccountButtonPresent(), "Login is not successful, account button is not present");
-
         // Open news page and verify elements are present
         NewsPage newsPage = homePage.getFooterMenu().openNewsPage();
         Assert.assertTrue(newsPage.isPageOpened(), "News page is not opened");
         softAssert.assertTrue(newsPage.isArticleInfoNamePresent(), "Article info name is not present");
         softAssert.assertTrue(newsPage.isSearchInputPresent(), "Search input is not present");
         softAssert.assertTrue(newsPage.isSearchButtonPresent(), "Search button is not present");
-        softAssert.assertAll();
 
         // Search and verify results
         newsPage.typeSearchText(searchText);
@@ -64,5 +74,6 @@ public class WebTest implements IAbstractTest {
         for (String title: newsPage.getArticleTitles()) {
             Assert.assertTrue(StringUtils.containsIgnoreCase(title, searchText), "Article does not contain searched result");
         }
+        softAssert.assertAll();
     }
 }

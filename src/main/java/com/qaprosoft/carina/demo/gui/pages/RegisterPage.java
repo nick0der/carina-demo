@@ -56,7 +56,7 @@ public class RegisterPage extends AbstractPage {
     }
 
     public boolean isSubmitButtonDisabled(){
-        return Objects.equals(submitButton.getAttribute("disabled"), "true");
+        return !submitButton.isClickable();
     }
 
     public boolean isSuccessTitlePresent(){
