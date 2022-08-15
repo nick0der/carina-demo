@@ -1,5 +1,6 @@
 package com.nickpopyk.web.demo.gui.pages;
 
+import com.nickpopyk.web.demo.gui.components.BrandsComponent;
 import com.nickpopyk.web.demo.gui.components.FooterMenu;
 import com.nickpopyk.web.demo.gui.components.TopNavbar;
 import com.qaprosoft.carina.core.foundation.utils.Configuration;
@@ -7,10 +8,6 @@ import com.qaprosoft.carina.core.foundation.utils.R;
 import com.qaprosoft.carina.core.gui.AbstractPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.lang.invoke.MethodHandles;
 
 public class HomePage extends AbstractPage {
 
@@ -18,6 +15,9 @@ public class HomePage extends AbstractPage {
     private TopNavbar topNavbar;
     @FindBy(xpath = "//div[@class='footer-inner']//div[@id='footmenu']")
     private FooterMenu footerMenu;
+
+    @FindBy(xpath = "//div[contains(@class, 'brandmenu-v2')]")
+    private BrandsComponent brandsComponent;
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -30,5 +30,9 @@ public class HomePage extends AbstractPage {
 
     public FooterMenu getFooterMenu() {
         return footerMenu;
+    }
+
+    public BrandsComponent getBrandsComponent() {
+        return brandsComponent;
     }
 }

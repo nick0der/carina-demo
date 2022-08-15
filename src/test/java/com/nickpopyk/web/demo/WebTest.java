@@ -2,6 +2,8 @@ package com.nickpopyk.web.demo;
 
 import com.nickpopyk.web.demo.gui.components.LoginPopUp;
 import com.nickpopyk.web.demo.gui.pages.NewsPage;
+import com.nickpopyk.web.demo.gui.pages.PhoneFinderPage;
+import com.nickpopyk.web.demo.gui.pages.ResultsPage;
 import com.nickpopyk.web.demo.services.impls.LoginService;
 import com.qaprosoft.carina.core.foundation.IAbstractTest;
 import com.qaprosoft.carina.core.foundation.report.testrail.TestRailCases;
@@ -48,7 +50,7 @@ public class WebTest implements IAbstractTest {
 
 
     @TestRailCases(testCasesId = "0002")
-    @Test(description = "Verify login and searching process", dataProvider = "search-data")
+    @Test(description = "Verify searching process", dataProvider = "search-data")
     @MethodOwner(owner = "nick0der")
     public void testVerifySearchingProcess(String searchText) {
         SoftAssert softAssert = new SoftAssert();
@@ -57,7 +59,6 @@ public class WebTest implements IAbstractTest {
         HomePage homePage = new HomePage(getDriver());
         homePage.open();
         Assert.assertTrue(homePage.isPageOpened(), "Home page is not opened");
-        Assert.assertTrue(homePage.getTopNavbar().isLoginButtonPresent(), "Login button is not present");
 
         // Open news page and verify elements are present
         NewsPage newsPage = homePage.getFooterMenu().openNewsPage();
@@ -75,5 +76,50 @@ public class WebTest implements IAbstractTest {
             Assert.assertTrue(StringUtils.containsIgnoreCase(title, searchText), "Article does not contain searched result");
         }
         softAssert.assertAll();
+    }
+
+    @TestRailCases(testCasesId = "0003")
+    @Test(description = "Verify phone finder")
+    @MethodOwner(owner = "nick0der")
+    public void testVerifyPhoneFinder() {
+        String brand = "Xiaomi";
+
+        // Open GSM Arena home page and verify page is opened
+        HomePage homePage = new HomePage(getDriver());
+        homePage.open();
+        Assert.assertTrue(homePage.isPageOpened(), "Home page is not opened");
+
+        // Go to phone finder page
+        Assert.assertTrue(homePage.getBrandsComponent().isPhoneFinderButtonPresent(), "Phone finder button is not present");
+        PhoneFinderPage phoneFinderPage = homePage.getBrandsComponent().openPhoneFinder();
+        Assert.assertTrue(phoneFinderPage.isPageOpened(), "Phone finder page is not opened");
+
+        // Select brand and verify show button
+        phoneFinderPage.chooseDropdownOption("Brand", brand);
+        Assert.assertTrue(phoneFinderPage.isShowButtonPresent(), "Show button is not present");
+        Assert.assertTrue(phoneFinderPage.doesShowButtonHaveResultsText(), "Result text is not present");
+        int resultsNumber = phoneFinderPage.getResultsNumber();
+
+        //Verify resultsPage
+        ResultsPage resultsPage = phoneFinderPage.clickShowButton();
+        Assert.assertTrue(resultsPage.isPageOpened(), "Results page is not opened");
+        Assert.assertTrue(resultsPage.isResultTextPresent(), "Result text is not present");
+        Assert.assertTrue(resultsPage.getResultText().matches("Your search returned [0-9]+ results\\.(?s:.*)"), "'Your search returned x results.' text is not present");
+        Assert.assertTrue(resultsPage.getResultText().matches("(?s:.*)To refine your search click here\\."), "'To refine your search click here.' text is not present");
+        Assert.assertTrue(resultsPage.isClickHereButtonPresent(), "'click here' button is not present");
+        Assert.assertEquals(resultsPage.getResultsNumber(), resultsNumber, "Result numbers are not the same");
+
+        //Check if all results are correct
+        for (String title: resultsPage.getPhonesTitles()) {
+            Assert.assertTrue(title.toLowerCase().contains(brand.toLowerCase()), "Title does not contain '" + brand + "' word");
+        }
+
+        //Verify note text
+        Assert.assertTrue(resultsPage.isNoteTextPresent(), "Note text is not present");
+        Assert.assertEquals(resultsPage.getNoteText(), "Note: Please report wrong Phone Finder results here.", "Note text is wrong");
+
+        //Click 'click here' button and verify corresponding page is opened
+        resultsPage.clickClickHereButton();
+        Assert.assertTrue(phoneFinderPage.isPageOpened(), "Phone finder page is not opened");
     }
 }
