@@ -63,11 +63,9 @@ public class ReviewsPage extends AbstractPage {
                         element.getText().contains("minute") ? Calendar.MINUTE :
                         element.getText().contains("hour") ? Calendar.HOUR : 0;
                 calendar.add(timeUnit, -Integer.parseInt(element.getText().replaceAll("\\D+","")));
-                System.out.println(calendar.getTime());
                 return calendar.getTime();
             }
             try {
-                System.out.println(format.parse(element.getText()));
                 return format.parse(element.getText());
             } catch (ParseException e) {
                 throw new RuntimeException(e);
