@@ -1,5 +1,6 @@
 package com.nickpopyk.web.demo.gui.pages;
 
+import com.nickpopyk.web.demo.utils.Dropdowns;
 import com.qaprosoft.carina.core.foundation.webdriver.decorator.ExtendedWebElement;
 import com.qaprosoft.carina.core.gui.AbstractPage;
 import org.openqa.selenium.WebDriver;
@@ -35,9 +36,9 @@ public class PhoneFinderPage extends AbstractPage {
         return Integer.parseInt(showButton.getText().replaceAll("[^0-9]", ""));
     }
 
-    public void chooseDropdownOption(String characteristic, String option){
-        dropdownButtonByText.format(characteristic).click();
-        dropdownOptionByText.format(characteristic, option).click();
+    public void chooseDropdownOption(Dropdowns text, String option){
+        dropdownButtonByText.format(text.getValue()).click();
+        dropdownOptionByText.format(text.getValue(), option).click();
     }
 
     public ResultsPage clickShowButton(){

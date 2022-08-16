@@ -1,5 +1,6 @@
 package com.nickpopyk.web.demo.gui.pages;
 
+import com.nickpopyk.web.demo.utils.SortReviewsBy;
 import com.qaprosoft.carina.core.foundation.webdriver.decorator.ExtendedWebElement;
 import com.qaprosoft.carina.core.gui.AbstractPage;
 import org.openqa.selenium.By;
@@ -7,15 +8,20 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
 import org.testng.Assert;
 
+import java.lang.invoke.MethodHandles;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static com.nickpopyk.web.demo.utils.IConstants.THREE_SEC_TIMEOUT;
 
 public class ReviewsPage extends AbstractPage {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
     @FindBy(xpath = "(//select[@name='nSortNew'])[1]")
     private ExtendedWebElement sortBySelect;
@@ -37,8 +43,8 @@ public class ReviewsPage extends AbstractPage {
         setPageAbsoluteURL(url);
     }
 
-    public void setSortBySelect(String by){
-        sortBySelect.select(by);
+    public void setSortBySelect(SortReviewsBy by){
+        sortBySelect.select(by.getValue());
     }
     public List<Integer> getVotesList(){
         return votesList.stream().map(element -> Integer.parseInt(element.getAttribute("data-votes"))).collect(Collectors.toList());
@@ -47,8 +53,21 @@ public class ReviewsPage extends AbstractPage {
     public List<Date> getDatesList(){
         List<Date> resultList;
         DateFormat format = new SimpleDateFormat("dd MMM yyyy", Locale.US);
+        Calendar calendar = Calendar.getInstance();
+
         resultList = datesList.stream().map(element -> {
+            // Handling seconds, minutes, hours ago
+            if (element.getText().contains("ago")){
+                calendar.setTime(new Date());
+                int timeUnit = element.getText().contains("second") ? Calendar.SECOND :
+                        element.getText().contains("minute") ? Calendar.MINUTE :
+                        element.getText().contains("hour") ? Calendar.HOUR : 0;
+                calendar.add(timeUnit, -Integer.parseInt(element.getText().replaceAll("\\D+","")));
+                System.out.println(calendar.getTime());
+                return calendar.getTime();
+            }
             try {
+                System.out.println(format.parse(element.getText()));
                 return format.parse(element.getText());
             } catch (ParseException e) {
                 throw new RuntimeException(e);
@@ -57,12 +76,24 @@ public class ReviewsPage extends AbstractPage {
         return resultList;
     }
 
-    public void voteComment(int index){
-        if (reactionButtons.get(0).isElementNotPresent(THREE_SEC_TIMEOUT)) {
-            Assert.fail("Reaction buttons are not present. Maybe you are not logged in.");
+    public void voteComment(int index, boolean upvote){
+        if (reactionButtons.get(index).isElementNotPresent(THREE_SEC_TIMEOUT)) {
+            Assert.fail("Reaction buttons are not present. Maybe you are not logged in or index is out of range.");
         }
         reactionButtons.get(index).click();
-        upvoteButton.click();
+        if (upvote){
+            if (upvoteButton.getText().toLowerCase().contains("downvote")){
+                LOGGER.info("Upvote is already present");
+            } else {
+                upvoteButton.click();
+            }
+        } else {
+            if (upvoteButton.getText().toLowerCase().contains("upvote")){
+                LOGGER.info("Comment is already not upvote");
+            } else {
+                upvoteButton.click();
+            }
+        }
     }
 
     public int getCommentRating(int index){
