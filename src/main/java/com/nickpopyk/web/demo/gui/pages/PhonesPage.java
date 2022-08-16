@@ -5,8 +5,6 @@ import com.qaprosoft.carina.core.gui.AbstractPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
 
-import static com.nickpopyk.web.demo.utils.IConstants.THREE_SEC_TIMEOUT;
-
 public class PhonesPage extends AbstractPage {
 
     @FindBy(xpath = "//ul[@class='article-info-meta']/li[contains(@class, 'popularity')]/a")

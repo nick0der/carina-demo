@@ -12,13 +12,8 @@ import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
-
-import static com.nickpopyk.web.demo.utils.IConstants.FIVE_SEC_TIMEOUT;
 
 public class WebTest implements IAbstractTest {
 
@@ -155,17 +150,20 @@ public class WebTest implements IAbstractTest {
         ReviewsPage reviewsPage = phonePage.openOpinionsTab();
         Assert.assertTrue(reviewsPage.isPageOpened(), "Reviews page is not opened");
         reviewsPage.setSortBySelect("Best rating");
-        List<Integer> sorted = reviewsPage.getVotesList().stream().sorted(Comparator.reverseOrder()).collect(Collectors.toList());
-        Assert.assertEquals(reviewsPage.getVotesList(), sorted, "Reviews are not sorted correctly");
+        List<Integer> sortedVotes = reviewsPage.getVotesList().stream().sorted(Comparator.reverseOrder()).collect(Collectors.toList());
+        Assert.assertEquals(reviewsPage.getVotesList(), sortedVotes, "Reviews are not sorted correctly by rating");
 
+        // Check random comment rating and unrating
+        int randomComment = new Random().nextInt(reviewsPage.getVotesList().size());
+        int previousRating = reviewsPage.getVotesList().get(randomComment);
+        reviewsPage.voteComment(randomComment); //vote
+        Assert.assertEquals(reviewsPage.getCommentRating(randomComment), previousRating + 1, "Comment is not rated");
+        reviewsPage.voteComment(randomComment); //unvote
+        Assert.assertEquals(reviewsPage.getCommentRating(randomComment), previousRating, "Comment is not unrated");
 
-        //TODO: check comment rating
-
-        // Rate and verify comment is rated
-//        int randomComment = new Random().nextInt(reviewsPage.getVotesList().size());
-//        int previousRating = reviewsPage.getVotesList().get(randomComment);
-//        int currentRating = reviewsPage.voteComment(randomComment);
-//        Assert.assertEquals(currentRating, previousRating + 1, "Comment is not rated");
-
+        // Check sorting by 'Newest first'
+        reviewsPage.setSortBySelect("Newest first");
+        List<Date> sortedDates = reviewsPage.getDatesList().stream().sorted(Collections.reverseOrder()).collect(Collectors.toList());
+        Assert.assertEquals(reviewsPage.getDatesList(), sortedDates, "Reviews are not sorted correctly by date");
     }
 }
