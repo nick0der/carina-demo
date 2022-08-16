@@ -1,0 +1,8 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite thread-count="4" verbose="1" name="Web Suite" annotations="JDK" parallel="methods">
+    <test name="test2">
+        <classes>
+            <class name="com.nickpopyk.web.demo.WebTest"/>
+        </classes>
+    </test>
+</suite>
