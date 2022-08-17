@@ -146,8 +146,8 @@ public class WebTest implements IAbstractTest {
         PhonesPage phonesPage = homePage.getBrandsComponent().openBrandLink(brand);
         Assert.assertTrue(phonesPage.isPageOpened(), "Page with " + brand + " phones is not opened");
         phonesPage.selectPopularityTab();
-        String phoneTitle =  phonesPage.getFirstPhoneTitle();
-        PhonePage phonePage = phonesPage.openFirstPhone();
+        String phoneTitle =  phonesPage.getPhoneTitle(0);
+        PhonePage phonePage = phonesPage.openPhone(0);
         Assert.assertTrue(phonePage.isPageOpened(), "Phone page is not opened");
         Assert.assertTrue(phonePage.getPhoneTitle().toLowerCase().contains(phoneTitle.toLowerCase()), "Phone title is wrong");
 
@@ -170,6 +170,57 @@ public class WebTest implements IAbstractTest {
         reviewsPage.setSortBySelect(SortReviewsBy.NEWEST);
         List<Date> reviewDates = reviewsPage.getDatesList();
         List<Date> sortedDates = reviewDates.stream().sorted(Collections.reverseOrder()).collect(Collectors.toList());
-        Assert.assertEquals(reviewDates, sortedDates, "Reviews are not sorted correctly by date");
+        for (int i = 0; i < reviewDates.size(); i++) {
+            Assert.assertEquals(reviewDates.get(i).toString(), sortedDates.get(i).toString(), "Reviews are not sorted correctly by date");
+        }
+    }
+
+    @TestRailCases(testCasesId = "0005")
+    @Test(description = "Verify phone comparing")
+    @MethodOwner(owner = "nick0der")
+    public void testVerifyCompare() {
+        // Constants
+        String brand = "Apple";
+        String phone1 = "iPhone 13 Pro Max";
+        String phone2 = "iPhone 13";
+        String phone3 = "iPhone 13 mini";
+        int FIRST = 0;
+        int SECOND = 1;
+        int THIRD = 2;
+        List<String> expectedCells = Arrays.asList("Network", "Launch", "Body", "Display", "Platform", "Memory",
+                "Main Camera", "Selfie Camera", "Sound", "Comms", "Features", "Battery", "Misc", "Tests");
+
+        // Open GSM Arena home page
+        HomePage homePage = new HomePage(getDriver());
+        homePage.open();
+        Assert.assertTrue(homePage.isPageOpened(), "Home page is not opened");
+
+        // Open brand phones page, then select popular tab
+        PhonesPage phonesPage = homePage.getBrandsComponent().openBrandLink(brand);
+        Assert.assertTrue(phonesPage.isPageOpened(), "Page with " + brand + " phones is not opened");
+        phonesPage.selectPopularityTab();
+
+        // Verify selecting
+        phonesPage.clickCompareButton();
+        phonesPage.selectPhone(phone1);
+        Assert.assertTrue(phonesPage.isSelected(phone1), "Phone '" + phone1 + "' is not selected");
+        phonesPage.selectPhone(phone2);
+        Assert.assertTrue(phonesPage.isSelected(phone2), "Phone '" + phone2 + "' is not selected");
+        Assert.assertEquals(phonesPage.getCompareButtonNumber(), 2, "Compare button number is wrong");
+
+        //Open compare page, verify phones titles
+        ComparePage comparePage = phonesPage.clickCompareButton();
+        Assert.assertTrue(comparePage.isPageOpened(), "Compare page is not opened");
+        Assert.assertTrue(comparePage.getPhonesToCompare().get(FIRST).toLowerCase().contains(phone1.toLowerCase()), "Wrong phone displayed");
+        Assert.assertTrue(comparePage.getPhonesToCompare().get(SECOND).toLowerCase().contains(phone2.toLowerCase()), "Wrong phone displayed");
+        comparePage.searchCandidate(THIRD, phone3);
+        Assert.assertTrue(comparePage.getPhonesToCompare().get(THIRD).toLowerCase().contains(phone3.toLowerCase()), "Wrong phone displayed");
+
+        //Verify table with characteristics
+        for (int i = 0; i < comparePage.getHeaderCells().size(); i++) {
+            Assert.assertTrue(comparePage.getHeaderCells().get(i).toLowerCase().contains(expectedCells.get(i).toLowerCase()),
+                    "'" + expectedCells.get(i) + "' cell is not present");
+            Assert.assertEquals(comparePage.getColumnsOfRow(comparePage.getHeaderCells().get(i)), 5, "There are not enough columns in the row");
+        }
     }
 }
