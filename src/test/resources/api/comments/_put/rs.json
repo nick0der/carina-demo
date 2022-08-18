@@ -1,0 +1,7 @@
+{
+  "postId": "${postId}",
+  "name": "${name}",
+  "email": "${email}",
+  "body": "${body}",
+  "id": "regex:[\\d]"
+}
