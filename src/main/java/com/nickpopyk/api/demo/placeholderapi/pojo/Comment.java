@@ -1,4 +1,4 @@
-package com.nickpopyk.api.demo.pojo;
+package com.nickpopyk.api.demo.placeholderapi.pojo;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

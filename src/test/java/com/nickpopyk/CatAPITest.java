@@ -1,23 +1,17 @@
-package com.nickpopyk.web.demo;
+package com.nickpopyk;
 
-import com.nickpopyk.api.demo.GetCommentByIdMethod;
-import com.nickpopyk.api.demo.GetCommentMethod;
-import com.nickpopyk.api.demo.PostCommentMethod;
-import com.nickpopyk.api.demo.pojo.Comment;
-import com.nickpopyk.catapi.demo.GetBreedByIdMethod;
-import com.nickpopyk.catapi.demo.GetBreedsMethod;
-import com.nickpopyk.catapi.demo.SearchForBreedsByNameMethod;
-import com.qaprosoft.apitools.validation.JsonCompareKeywords;
+import com.nickpopyk.api.demo.catapi.GetBreedByIdMethod;
+import com.nickpopyk.api.demo.catapi.GetBreedsMethod;
+import com.nickpopyk.api.demo.catapi.SearchForBreedsByNameMethod;
 import com.qaprosoft.carina.core.foundation.IAbstractTest;
 import com.qaprosoft.carina.core.foundation.utils.ownership.MethodOwner;
-import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.Test;
 
 import java.lang.invoke.MethodHandles;
 
-public class CatApiTest implements IAbstractTest {
+public class CatAPITest implements IAbstractTest {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 

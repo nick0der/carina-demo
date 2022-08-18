@@ -1,8 +1,7 @@
-package com.nickpopyk.web.demo;
+package com.nickpopyk;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.nickpopyk.api.demo.*;
-import com.nickpopyk.api.demo.pojo.Comment;
+import com.nickpopyk.api.demo.placeholderapi.*;
+import com.nickpopyk.api.demo.placeholderapi.pojo.Comment;
 import com.qaprosoft.apitools.validation.JsonCompareKeywords;
 import com.qaprosoft.carina.core.foundation.IAbstractTest;
 import com.qaprosoft.carina.core.foundation.utils.ownership.MethodOwner;
@@ -13,7 +12,7 @@ import org.testng.annotations.Test;
 
 import java.lang.invoke.MethodHandles;
 
-public class ApiTest implements IAbstractTest {
+public class APITest implements IAbstractTest {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
@@ -40,7 +39,7 @@ public class ApiTest implements IAbstractTest {
 
     @Test()
     @MethodOwner(owner = "nick0der")
-    public void testGetAllComments() throws JsonProcessingException {
+    public void testGetAllComments() {
         LOGGER.info("Getting all comments...");
         GetCommentMethod api = new GetCommentMethod();
         api.callAPIExpectSuccess();
@@ -61,7 +60,7 @@ public class ApiTest implements IAbstractTest {
 
     @Test()
     @MethodOwner(owner = "nick0der")
-    public void testUpdateComment() throws JsonProcessingException {
+    public void testUpdateComment() {
         Comment comment = new Comment(1,1, "John", "johntest@gmail.com", "some random text");
         LOGGER.info("Updating comment with id=" + comment.getId() + "..." );
         PutCommentMethod api = new PutCommentMethod(comment);

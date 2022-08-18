@@ -1,10 +1,6 @@
-package com.nickpopyk.carina.demo;
-
-import java.lang.invoke.MethodHandles;
+package com.nickpopyk;
 
 import org.apache.commons.lang3.RandomStringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;

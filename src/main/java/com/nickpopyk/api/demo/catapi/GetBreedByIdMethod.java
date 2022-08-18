@@ -1,19 +1,18 @@
-package com.nickpopyk.api.demo;
+package com.nickpopyk.api.demo.catapi;
 
 import com.qaprosoft.carina.core.foundation.api.AbstractApiMethodV2;
 import com.qaprosoft.carina.core.foundation.api.annotation.Endpoint;
-import com.qaprosoft.carina.core.foundation.api.annotation.ResponseTemplatePath;
 import com.qaprosoft.carina.core.foundation.api.annotation.SuccessfulHttpStatus;
 import com.qaprosoft.carina.core.foundation.api.http.HttpMethodType;
 import com.qaprosoft.carina.core.foundation.api.http.HttpResponseStatusType;
 import com.qaprosoft.carina.core.foundation.utils.Configuration;
 
-@Endpoint(url = "${base_url}/comments/${id}", methodType = HttpMethodType.GET)
-@ResponseTemplatePath(path = "api/comments/_getById/rs.json")
+@Endpoint(url = "${base_url}/v1/breeds/${id}", methodType = HttpMethodType.GET)
 @SuccessfulHttpStatus(status = HttpResponseStatusType.OK_200)
-public class GetCommentByIdMethod extends AbstractApiMethodV2 {
-    public GetCommentByIdMethod(Integer id){
-        replaceUrlPlaceholder("base_url", Configuration.getEnvArg("api_url"));
-        replaceUrlPlaceholder("id", id.toString());
+public class GetBreedByIdMethod extends AbstractApiMethodV2 {
+    public GetBreedByIdMethod(String id){
+        setHeaders("x-api-key=" +  Configuration.getEnvArg("cat_api_key"));
+        replaceUrlPlaceholder("base_url", Configuration.getEnvArg("cat_api_url"));
+        replaceUrlPlaceholder("id", id);
     }
 }

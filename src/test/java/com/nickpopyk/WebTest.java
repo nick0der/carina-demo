@@ -1,4 +1,4 @@
-package com.nickpopyk.web.demo;
+package com.nickpopyk;
 
 import com.nickpopyk.web.demo.gui.components.LoginPopUp;
 import com.nickpopyk.web.demo.gui.pages.*;
