@@ -1,4 +1,4 @@
-package com.nickpopyk.wish.demo;
+package com.nickpopyk;
 
 import com.nickpopyk.wish.demo.utils.Pages;
 import com.nickpopyk.wish.demo.mobile.gui.pages.common.*;

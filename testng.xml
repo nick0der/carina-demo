@@ -1,8 +1,9 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite thread-count="4" verbose="1" name="Web Suite" annotations="JDK" parallel="methods">
-    <test name="GSM Arena WEB testing">
+<suite thread-count="4" verbose="1" name="Web Suite" annotations="JDK" parallel="classes">
+    <test name="API tests">
         <classes>
-            <class name="com.nickpopyk.web.demo.WebTest"/>
+            <class name="com.nickpopyk.APITest"/>
+            <class name="com.nickpopyk.CatAPITest"/>
         </classes>
     </test>
 </suite>

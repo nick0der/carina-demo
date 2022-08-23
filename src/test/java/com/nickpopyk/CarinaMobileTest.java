@@ -1,4 +1,4 @@
-package com.nickpopyk.carina.demo;
+package com.nickpopyk;
 
 import com.nickpopyk.carina.demo.mobile.gui.pages.common.*;
 import com.nickpopyk.carina.demo.service.RegisterPageService;
@@ -11,7 +11,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
-public class MobileTest implements IAbstractTest {
+public class CarinaMobileTest implements IAbstractTest {
 
     private final static String TITLE = "CARINA";
     private final static String MALE_RADIO_BTN_TEXT = "Male";

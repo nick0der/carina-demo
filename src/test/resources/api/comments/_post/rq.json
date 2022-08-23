@@ -1,0 +1,6 @@
+{
+  "postId": "${postId}",
+  "name": "${name}",
+  "email": "${email}"
+  <#if body??>,"body": "${body}"</#if>
+}
